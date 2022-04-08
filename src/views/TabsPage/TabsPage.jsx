@@ -18,7 +18,7 @@ const TabsPage = ({ navigation, route }) => {
     return (
         <Tab.Navigator screenOptions={tabNavigatorScreenOptions}>
             <Tab.Screen
-                name='Home'
+                name='Library'
                 component={LoginPage}
                 listeners={{
                     focus: () => {
@@ -47,7 +47,7 @@ const TabsPage = ({ navigation, route }) => {
 
         return {
             tabBarIcon: ({ focused, color }) => {
-                if (route.name === 'Home') {
+                if (route.name === 'Library') {
                     return focused ? (
                         <>
                             <Ionicons name="library-outline" size={25} color={color} />

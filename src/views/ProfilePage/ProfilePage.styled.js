@@ -5,6 +5,8 @@ import { TextInput as MaterialTextInput, Colors, HelperText } from "react-native
 export const MainContainer = styled.View`
     height: 100%
     width: 100%
+    display: flex
+    padding: 2%
 `
 
 export const NoProfileContainer = styled.View`
@@ -42,4 +44,39 @@ export const LoginButton = styled.TouchableOpacity`
 
 export const ButtonText = styled.Text`
     color: white
+`
+
+export const ProfileContainer = styled.View`
+    display: flex
+    flexDirection: column
+    alignItems: center
+    justifyContent: center
+    height: 90%
+`
+
+export const NoImage = styled.Image.attrs({
+    source: require('../../assets/RuKoMiLogo.png')
+})`
+    width: 250px
+    height: 250px
+    resizeMode: contain
+`
+
+export const InfoContainer = styled.View`
+    marginTop: 2%
+`
+
+export const InfoText = styled.Text`
+    color: black
+    textAlign: center
+    fontSize: 25px
+    marginTop: 2%
+`
+
+export const ToolBar = styled.View`
+    display: flex
+    flexDirection: row
+    justifyContent: space-between
+    alignItems: center
+    padding: 2%
 `
