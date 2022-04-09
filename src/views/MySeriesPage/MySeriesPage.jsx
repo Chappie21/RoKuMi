@@ -6,12 +6,14 @@ import {
     MainContainer,
     Separator,
     AddButton,
-    ButtonContent
+    ButtonContent,
+    NoUpladSeries
 } from './MySeriesPage.styled'
 import CardSerie from '../../components/CardSerie/CardSerie';
 
 // API
 import { getUserSeries } from '../../api/series';
+import NoContent from '../../components/NoContent/NoContent';
 
 const MySeriesPage = ({ navigation }) => {
 
@@ -22,7 +24,7 @@ const MySeriesPage = ({ navigation }) => {
         const series = await getSeries();
 
         // setear series del usuario en el stado del componente
-        setSeries(series);
+        setSeries(series || []);
     }, [])
 
     // Obtener sereies del usuario
@@ -40,18 +42,24 @@ const MySeriesPage = ({ navigation }) => {
             <ScrollView>
                 <MainContainer>
                     {
-                        series.map((serie, index) =>
-                            <>
-                                <CardSerie
-                                    key={serie?.id_serie}
-                                    name={serie?.name}
-                                    author={serie?.author}
-                                    postedBy={serie?.posted_by}
-                                    postingDate={serie?.posting_date}
-                                    cover={serie?.cover}
-                                />
-                                <Separator key={index} />
-                            </>
+                        series.length !== 0 ?
+                            series.map((serie, index) =>
+                                <>
+                                    <CardSerie
+                                        key={serie?.id_serie}
+                                        name={serie?.name}
+                                        author={serie?.author}
+                                        postedBy={serie?.posted_by}
+                                        postingDate={serie?.posting_date}
+                                        cover={serie?.cover}
+                                    />
+                                    <Separator key={index} />
+                                </>
+                            )
+                        : (
+                            <NoUpladSeries>
+                                <NoContent message="You haven't posted anything yet"/>
+                            </NoUpladSeries>
                         )
                     }
                 </MainContainer>
