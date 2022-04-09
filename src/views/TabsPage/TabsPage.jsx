@@ -4,8 +4,8 @@ import { Text, useColorScheme, Platform } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 
 // Views
-import LoginPage from "../LoginPage/LoginPage";
 import ProfilePage from "../ProfilePage/ProfilePage";
+import LibraryPage from "../LibraryPage/LibraryPage";
 
 const Tab = createBottomTabNavigator();
 
@@ -19,14 +19,23 @@ const TabsPage = ({ navigation, route }) => {
         <Tab.Navigator screenOptions={tabNavigatorScreenOptions}>
             <Tab.Screen
                 name='Library'
-                component={LoginPage}
+                options={{
+                    headerStyle: {
+                        backgroundColor: 'white',
+                        borderBottomColor: "transparent",
+                        shadowColor: 'transparent',
+                        borderBottomWidth: 0,
+                        elevation: 0
+                    }
+                }}
+                component={LibraryPage}
                 listeners={{
                     focus: () => {
                         setTabIndex(0)
                     }
                 }}
             />
-             <Tab.Screen
+            <Tab.Screen
                 name='Profile'
                 component={ProfilePage}
                 listeners={{
