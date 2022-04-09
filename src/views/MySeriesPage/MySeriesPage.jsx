@@ -1,10 +1,71 @@
 import React, { useState, useEffect } from 'react';
-import { Text } from 'react-native'
+import { Text, ScrollView } from 'react-native'
+import { Ionicons } from '@expo/vector-icons';
+// COMPONENTS
+import {
+    MainContainer,
+    Separator,
+    AddButton,
+    ButtonContent
+} from './MySeriesPage.styled'
+import CardSerie from '../../components/CardSerie/CardSerie';
 
-const MySeriesPage = ({navigation}) =>{
+// API
+import { getUserSeries } from '../../api/series';
 
-    return(
-        <Text>My Series Page it's works</Text>
+const MySeriesPage = ({ navigation }) => {
+
+
+    const [series, setSeries] = useState([]);
+
+    useEffect(async () => {
+        const series = await getSeries();
+
+        // setear series del usuario en el stado del componente
+        setSeries(series);
+    }, [])
+
+    // Obtener sereies del usuario
+    const getSeries = async () => {
+        try {
+            const response = await getUserSeries();
+            return response;
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    return (
+        <>
+            <ScrollView>
+                <MainContainer>
+                    {
+                        series.map((serie, index) =>
+                            <>
+                                <CardSerie
+                                    key={serie?.id_serie}
+                                    name={serie?.name}
+                                    author={serie?.author}
+                                    postedBy={serie?.posted_by}
+                                    postingDate={serie?.posting_date}
+                                    cover={serie?.cover}
+                                />
+                                <Separator key={index} />
+                            </>
+                        )
+                    }
+                </MainContainer>
+            </ScrollView>
+            <AddButton>
+                <ButtonContent>
+                    <Ionicons
+                        style={{marginLeft: 11}}
+                        name="add-outline" 
+                        size={45} color="white" 
+                    />
+                </ButtonContent>
+            </AddButton>
+        </>
     )
 
 }
