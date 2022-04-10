@@ -1,10 +1,9 @@
 import styled from 'styled-components/native'
 import { TouchableOpacity } from 'react-native-web';
 
-export const CardContainer = styled.View`
+export const CardContainer = styled.TouchableOpacity`
     width: 100%
-    height: 15%
-    padding: 5%
+    padding: 2%
 `
 
 export const InfoContainer = styled.View`
@@ -13,17 +12,11 @@ export const InfoContainer = styled.View`
     alignItems: center
 `
 
-export const ImageContainer = styled.TouchableOpacity`
-    height: 95px
-    width: 95px
-    borderRadius: 50px
-`
-
 export const CoverImage = styled.Image.attrs(props =>({
     source: props.source
 }))`
-    height: 95px
-    width: 95px
+    height: 100%
+    width: 25%
     borderRadius: 50px
 `
 

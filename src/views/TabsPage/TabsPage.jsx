@@ -7,6 +7,7 @@ import { Ionicons } from "@expo/vector-icons";
 // Views
 import ProfilePage from "../ProfilePage/ProfilePage";
 import LibraryPage from "../LibraryPage/LibraryPage";
+import SearchPage from "../SearchPage/SearchPage";
 
 const Tab = createBottomTabNavigator();
 
@@ -22,7 +23,7 @@ const TabsPage = ({ navigation, route }) => {
         <Tab.Navigator screenOptions={tabNavigatorScreenOptions}>
             <Tab.Screen
                 name='Search'
-                component={ProfilePage}
+                component={SearchPage}
                 listeners={{
                     focus: () => {
                         setTabIndex(0)
