@@ -2,7 +2,7 @@ import axios from "axios";
 import { constants } from "./constants";
 
 // Definir base URL de llamadas a la API
-axios.defaults.baseURL = 'https://62519625dfa31c1fbd70187d.mockapi.io/test/rokumi/';
+axios.defaults.baseURL = constants.baseUrl;
 
 export const getUserSeries = async () => {
     try {
@@ -12,4 +12,15 @@ export const getUserSeries = async () => {
     } catch (error) {
         console.log(error);
     }
-} 
+}
+
+// Obtener todas las series
+export const getAllSeries = async () =>{
+    try {
+        const { data } = await axios.get(constants.getAllSeries);
+
+        return data;
+    } catch (error) {
+        console.log(error);
+    }
+}

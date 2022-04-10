@@ -19,16 +19,16 @@ const CardSerie = ({name, cover, author, postedBy, postingDate, status, onPress}
             <InfoContainer>
 
                 {/* Imagen de portada de la serie */}
-                <ImageContainer>
-                    <CoverImage source={{ uri: cover || '../../assets/RuKoMiLogo.png'}}/>
-                </ImageContainer>
+               
+                <CoverImage source={{ uri: cover || '../../assets/RuKoMiLogo.png'}}/>
+               
 
                 {/* Datos de la serie */}
                 <DataSerie>
                     <TittleText>{name}</TittleText>
-                    <InfoText>{author}</InfoText>
-                    <InfoText>{postedBy}</InfoText>
-                    <InfoText>{`upload: ${postingDate}`}</InfoText>
+                    <InfoText>{`author: ${author || 'not information'}`}</InfoText>
+                    <InfoText>{`published by: ${postedBy}`}</InfoText>
+                    <InfoText>{`published: ${postingDate || 'not information'}`}</InfoText>
                 </DataSerie>
 
             </InfoContainer>
