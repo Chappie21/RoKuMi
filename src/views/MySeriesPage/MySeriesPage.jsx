@@ -64,7 +64,9 @@ const MySeriesPage = ({ navigation }) => {
                     }
                 </MainContainer>
             </ScrollView>
-            <AddButton>
+            <AddButton
+                onPress={() => navigation.push('AddSeriePage')}
+            >
                 <ButtonContent>
                     <Ionicons
                         style={{marginLeft: 11}}
