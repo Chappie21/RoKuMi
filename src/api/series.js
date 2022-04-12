@@ -16,7 +16,7 @@ export const getUserSeries = async () => {
         await setToken();
         const { data } = await axios.get(constants.getUserSeries);
 
-        return data.tracking;
+        return data.tracking_list;
     } catch (error) {
         console.log(error);
     }
@@ -40,13 +40,18 @@ export const postUploadSerie = async (formData) => {
 
         const headers = {
             Authorization: axios.defaults.headers.common['authorization'],
-            'Content-Type': 'multipart/form-data',
+            'Content-Type': `multipart/form-data`,
         }
 
-        const { data } = await axios({method: 'POST', url: constants.seriesEP, data: formData, headers: headers});
+        const { data } = await axios.post(constants.seriesEP, formData, {headers: headers,
+            transformRequest: (data, headers) => {
+                return formData; // this is doing the trick
+              },
+        });
 
         return data;
     } catch (error) {
         console.log(error.response.data);
+        return error.response.data;
     }
 }

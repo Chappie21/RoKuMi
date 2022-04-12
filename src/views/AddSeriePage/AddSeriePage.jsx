@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Text, View, ScrollView } from 'react-native'
+import { Text, View, ScrollView, Alert } from 'react-native'
 import FormData from 'form-data';
 
 // COMPONENTS
@@ -60,7 +60,7 @@ const AddSeriePage = ({ navigation }) => {
 
     const handleSubmitSerie = async () => {
         try {
-        
+
             const data = new FormData();
 
             data.append('serieName', serieName);
@@ -70,23 +70,41 @@ const AddSeriePage = ({ navigation }) => {
 
             const fileType = cover.uri.substr(cover.uri.lastIndexOf('.') + 1)
 
-            data.append('cover', { uri: cover, name: `${serieName}.${fileType}`, type: `image/${fileType}` })
-            
+            data.append('cover', {
+                uri: cover.uri,
+                height: cover.height,
+                width: cover.width,
+                name: `${serieName}.${fileType}`,
+                type: `image/${fileType}`
+            })
+
             setLoading(true);
             const response = await postUploadSerie(data);
             setLoading(false);
 
-            console.log(response);
+            if (response.status === "201") {
+                navigation.goBack();
+            } else {
+                Alert.alert(
+                    '',
+                    response.message,
+                    [
+                        {
+                            text: 'OK'
+                        }
+                    ]
+                )
+            }
 
         } catch (error) {
-            console.log(error);
             setLoading(false);
+            console.log(error);
         }
     }
 
     return (
         <ScrollView>
-            <Loading enabled={loading}/>
+            <Loading enabled={loading} />
             <MainContainer>
                 <FormConatiner>
                     {/* Serie Cover */}

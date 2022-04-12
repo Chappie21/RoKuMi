@@ -24,13 +24,21 @@ const SearchPage = ({ navigation }) => {
     const [searchQuery, setSearchQuery] = useState('');
     const [allSeries, setAllSeries] = useState([]);
     const [series, setSeries] = useState([]);
+    const [refresh, setRefresh] = useState(false);
     const [loading, setLoading] = useState(false);
+
+    useEffect(() =>{
+        const willFocusSubscription = navigation.addListener('focus', () =>{
+            setRefresh(true);
+        })
+        return willFocusSubscription;
+    }, [])
 
     useEffect(async () => {
         const data = await getSeries();
         setAllSeries(data.data);
         setSeries(data.data);
-    }, [])
+    }, [refresh])
 
     useEffect(() =>{
         
@@ -60,6 +68,8 @@ const SearchPage = ({ navigation }) => {
             const response = await getAllSeries();
             setLoading(false);
 
+            setRefresh(false);
+
             if (response.status === "200") {
                 return response;
             } else {
@@ -69,6 +79,7 @@ const SearchPage = ({ navigation }) => {
         } catch (error) {
             console.log(error);
             setLoading(false);
+            setRefresh(false);
             return [];
         }
     }

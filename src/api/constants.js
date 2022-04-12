@@ -3,5 +3,5 @@ export const constants = {
     postLogin: 'user/signIn',
     postRegister: 'user/signUp',
     seriesEP: 'serie',
-    getUserSeries: 'user',
+    getUserSeries: 'user/trackingList',
 }
