@@ -15,22 +15,34 @@ import CardSerie from '../../components/CardSerie/CardSerie';
 import { getUserSeries } from '../../api/series';
 import NoContent from '../../components/NoContent/NoContent';
 
+// UTILS
+import { getDateFormat } from '../../utils/DateFormat';
+
 const MySeriesPage = ({ navigation }) => {
 
 
     const [series, setSeries] = useState([]);
+    const [refresh, setRefresh] = useState(false);
+
+    useEffect(() =>{
+        const willFocusSubscription = navigation.addListener('focus', () =>{
+            setRefresh(true);
+        })
+        return willFocusSubscription;
+    }, [])
 
     useEffect(async () => {
         const series = await getSeries();
 
         // setear series del usuario en el stado del componente
         setSeries(series || []);
-    }, [])
+    }, [refresh])
 
     // Obtener sereies del usuario
     const getSeries = async () => {
         try {
             const response = await getUserSeries();
+            setRefresh(false);
             return response;
         } catch (error) {
             console.log(error);
@@ -46,11 +58,11 @@ const MySeriesPage = ({ navigation }) => {
                             series.map((serie, index) =>
                                 <>
                                     <CardSerie
-                                        key={serie?.id_serie}
+                                        key={serie?.id}
                                         name={serie?.name}
                                         author={serie?.author}
-                                        postedBy={serie?.posted_by}
-                                        postingDate={serie?.posting_date}
+                                        postedBy={`${serie?.posted_by?.first_name} ${serie?.posted_by?.last_name}`}
+                                        postingDate={getDateFormat(serie?.posting_date)}
                                         cover={serie?.cover}
                                     />
                                     <Separator key={index} />
@@ -64,7 +76,9 @@ const MySeriesPage = ({ navigation }) => {
                     }
                 </MainContainer>
             </ScrollView>
-            <AddButton>
+            <AddButton
+                onPress={() => navigation.push('AddSeriePage')}
+            >
                 <ButtonContent>
                     <Ionicons
                         style={{marginLeft: 11}}
