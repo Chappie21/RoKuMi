@@ -4,5 +4,6 @@ export const constants = {
     postRegister: 'user/signUp',
     seriesEP: 'serie',
     getUserSeries: 'user/trackingList',
-    getChapterstBySerie: (serie) => `serie/${serie}`
+    getChapterstBySerie: (serie) => `serie/${serie}`,
+    postChapter: (serie) => `chapter/${serie}`
 }

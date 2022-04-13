@@ -36,7 +36,7 @@ const SerieProfilePage = ({ navigation, route }) => {
     const [chapters, setChapters] = useState([]);
     const [loading, setLoading] = useState(false);
     const [isFollow, setIsFollow] = useState(false);
-    const isOwned = serie?.posted_by.idUser === user.idUser;
+    const isOwned = user ? (serie?.posted_by.idUser === user.idUser) : false;
 
     // Color de texto para borde y texto dependiendo del status de la serie
     const colorStatus = {
@@ -47,15 +47,17 @@ const SerieProfilePage = ({ navigation, route }) => {
 
 
     useEffect(async () => {
-        // Establecer titulo de la vista con titulo de la serie
-        navigation.setOptions({
-            title: serie.name
+        const willFocusSubscription = navigation.addListener('focus', async () => {
+            // Establecer titulo de la vista con titulo de la serie
+            navigation.setOptions({
+                title: serie.name
+            })
+
+            // Obtener capitulos de la serie visualizada
+            const data = await getChapters(serie.idSerie);
+            setChapters(data || []);
         })
-
-        // Obtener capitulos de la serie visualizada
-        const data = await getChapters(serie.idSerie);
-        setChapters(data || []);
-
+        return willFocusSubscription;
     }, [])
 
     const getChapters = async (serie) => {
@@ -64,7 +66,7 @@ const SerieProfilePage = ({ navigation, route }) => {
             const response = await getChaptersOfSerie(serie);
             setLoading(false);
 
-            if (response.status === '200') {
+            if (response.status === 200) {
                 return response.data.chapters;
             }
 
@@ -98,34 +100,37 @@ const SerieProfilePage = ({ navigation, route }) => {
                     <TouchableOpacity
                         onPress={() => setIsFollow(!isFollow)}
                     >
-                        <AntDesign name={isFollow ? 'heart' : 'hearto'} size={24} color='#ab47bc'/>
+                        <AntDesign name={isFollow ? 'heart' : 'hearto'} size={24} color='#ab47bc' />
                     </TouchableOpacity>
                 </ChaptersSeparator>
                 <Separator />
                 {
                     chapters.length !== 0
                         ?
-                        chapters.map(chapter =>
-                            <ChapterCard
-                                key={chapter?.idChapter}
-                                name={chapter?.chapterName}
-                                chapterNumber={chapter?.chapter_number}
-                                publishedDate={getDateFormat(chapter?.released)}
-                                isOwned={isOwned}
-                            />
+                        chapters.map((chapter, index) =>
+                            <>
+                                <ChapterCard
+                                    key={chapter?.idChapter}
+                                    name={chapter?.chapterName}
+                                    chapterNumber={chapter?.chapter_number}
+                                    publishedDate={getDateFormat(chapter?.released)}
+                                    isOwned={isOwned}
+                                />
+                                <Separator key={index} />
+                            </>
                         )
-                        : <NoContent message="No chapters at the moment" xCenter={false}/>
+                        : <NoContent message="No chapters at the moment" xCenter={false} />
                 }
             </ScrollView>
             {
-                    isOwned &&
-                    <AddButton>
-                        <Ionicons
-                            style={{ marginLeft: 11 }}
-                            name="add-outline"
-                            size={45} color="white"
-                        />
-                    </AddButton>
+                isOwned &&
+                <AddButton onPress={() => navigation.push('AddChapterPage', { serieId: serie?.idSerie })}>
+                    <Ionicons
+                        style={{ marginLeft: 11 }}
+                        name="add-outline"
+                        size={45} color="white"
+                    />
+                </AddButton>
             }
         </MainContainer>
     )

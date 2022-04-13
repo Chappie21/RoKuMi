@@ -46,7 +46,7 @@ const LoginPage = ({ navigation }) => {
             const response = await postLogin(userNameOrEmail, password);
             setIsloading(false);
 
-            if(response.status === "200"){
+            if(response.status === 200){
                 const {status, message, ...userData} = response;
                 await AsyncStorageLib.setItem('USER', JSON.stringify(userData));
         

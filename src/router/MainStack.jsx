@@ -21,6 +21,8 @@ import { setUser } from '../store/actions/UserActions';
 import { checkIfTokenExpired } from '../utils/TokenFunctions';
 import AddSeriePage from '../views/AddSeriePage/AddSeriePage';
 import SerieProfilePage from '../views/SerieProfilePage/SerieProfilePage';
+import AddChapterPage from '../views/AddChapterPage/AddChapterPage';
+import ImageBrowserPage from '../views/ImageBrowserPage/ImageBrowserPage';
 
 
 const Stack = createNativeStackNavigator();
@@ -48,7 +50,7 @@ const MainStack = () => {
 
     return (
         <>
-            <Loading enabled={loading}/>
+            <Loading enabled={loading} />
             <NavigationContainer
                 theme={{
                     colors: {
@@ -86,6 +88,16 @@ const MainStack = () => {
                     <Stack.Screen
                         name='SerieProfilePage'
                         component={SerieProfilePage}
+                    />
+                    <Stack.Screen
+                        name='AddChapterPage'
+                        options={{ title: 'Add new chapter' }}
+                        component={AddChapterPage}
+                    />
+                    <Stack.Screen
+                        name='ImageBrowserPage'
+                        component={ImageBrowserPage}
+                        options={{ title: 'Selected 0 Pages'}}
                     />
                 </Stack.Navigator>
             </NavigationContainer>
