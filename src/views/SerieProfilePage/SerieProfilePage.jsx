@@ -116,7 +116,8 @@ const SerieProfilePage = ({ navigation, route }) => {
                         )
                         : <NoContent message="No chapters at the moment" xCenter={false}/>
                 }
-                {
+            </ScrollView>
+            {
                     isOwned &&
                     <AddButton>
                         <Ionicons
@@ -125,15 +126,7 @@ const SerieProfilePage = ({ navigation, route }) => {
                             size={45} color="white"
                         />
                     </AddButton>
-                }
-            </ScrollView>
-            <AddButton>
-                <Ionicons
-                    style={{ marginLeft: 11 }}
-                    name="add-outline"
-                    size={45} color="white"
-                />
-            </AddButton>
+            }
         </MainContainer>
     )
 }
