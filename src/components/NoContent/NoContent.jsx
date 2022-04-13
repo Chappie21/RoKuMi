@@ -7,7 +7,7 @@ import {
     NoContentImage,
 } from './NoContent.styled'
 
-const NoContent = ({message}) =>{
+const NoContent = ({message, yCenter = true, xCenter = true}) =>{
 
     const images = [
         require('../../assets/NoContent.png'),
@@ -21,7 +21,10 @@ const NoContent = ({message}) =>{
     const imageRandom = images[Math.floor(Math.random() * images.length)];
 
     return(
-        <MainContainer>
+        <MainContainer
+            xCenter={xCenter}
+            yCenter={yCenter}
+        >
             <NoContentImage source={imageRandom}/>
             <MessageText>{message}</MessageText>
         </MainContainer>
