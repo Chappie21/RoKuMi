@@ -4,6 +4,7 @@ import * as ImagePicker from "expo-image-picker";
 
 const AvatarImage = ({
   size,
+  src,
   marginTop,
   marginRight,
   marginBottom,
@@ -93,7 +94,7 @@ const AvatarImage = ({
           marginLeft: marginLeft ? marginLeft : 0,
         }}
         source={
-          selectImage ? selectImage  : require("../../assets/RuKoMiLogo.png")
+          src ? {uri: src} : selectImage ? selectImage  : require("../../assets/RuKoMiLogo.png")
         }
       ></Image>
     </View>
