@@ -43,15 +43,28 @@ export const postUploadSerie = async (formData) => {
             'Content-Type': `multipart/form-data`,
         }
 
-        const { data } = await axios.post(constants.seriesEP, formData, {headers: headers,
+        const { data } = await axios.post(constants.seriesEP, formData, {
+            headers: headers,
             transformRequest: (data, headers) => {
                 return formData; // this is doing the trick
-              },
+            },
         });
 
         return data;
     } catch (error) {
         console.log(error.response.data);
         return error.response.data;
+    }
+}
+
+// Obtener Capitulos de una serie
+export const getChaptersOfSerie = async (serie) => {
+    try {
+        await setToken();
+        const { data } = await axios.get(constants.getChapterstBySerie(serie));
+
+        return data;
+    } catch (error) { 
+        console.log(error.response.data);
     }
 }

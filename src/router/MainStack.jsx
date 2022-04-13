@@ -20,6 +20,7 @@ import { setUser } from '../store/actions/UserActions';
 // UTILS
 import { checkIfTokenExpired } from '../utils/TokenFunctions';
 import AddSeriePage from '../views/AddSeriePage/AddSeriePage';
+import SerieProfilePage from '../views/SerieProfilePage/SerieProfilePage';
 
 
 const Stack = createNativeStackNavigator();
@@ -81,6 +82,10 @@ const MainStack = () => {
                         name='AddSeriePage'
                         options={{ title: 'Add Serie' }}
                         component={AddSeriePage}
+                    />
+                    <Stack.Screen
+                        name='SerieProfilePage'
+                        component={SerieProfilePage}
                     />
                 </Stack.Navigator>
             </NavigationContainer>

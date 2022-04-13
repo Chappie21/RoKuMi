@@ -15,7 +15,7 @@ import {
 const CardSerie = ({name, cover, author, postedBy, postingDate, status, onPress}) =>{
 
     return(
-        <CardContainer>
+        <CardContainer onPress={onPress}>
             <InfoContainer>
 
                 {/* Imagen de portada de la serie */}

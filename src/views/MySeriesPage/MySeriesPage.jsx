@@ -64,6 +64,7 @@ const MySeriesPage = ({ navigation }) => {
                                         postedBy={`${serie?.posted_by?.first_name} ${serie?.posted_by?.last_name}`}
                                         postingDate={getDateFormat(serie?.posting_date)}
                                         cover={serie?.cover}
+                                        onPress={() => navigation.push('SerieProfilePage', serie)}
                                     />
                                     <Separator key={index} />
                                 </>
