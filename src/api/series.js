@@ -58,7 +58,7 @@ export const postUploadSerie = async (formData) => {
 }
 
 // Obtener Capitulos de una serie
-export const getChaptersOfSerie = async (serie) => {
+export const getSerieData = async (serie) => {
     try {
         const { data } = await axios.get(constants.getChapterstBySerie(serie));
 

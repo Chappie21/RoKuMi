@@ -26,7 +26,7 @@ import { Feather } from '@expo/vector-icons';
 
 
 // API
-import { getChaptersOfSerie } from '../../api/series';
+import { getSerieData } from '../../api/series';
 
 // UITLS
 import { getDateFormat } from '../../utils/DateFormat';
@@ -40,7 +40,7 @@ const SerieProfilePage = ({ navigation, route }) => {
     const [chapters, setChapters] = useState([]);
     const [loading, setLoading] = useState(false);
     const [isFollow, setIsFollow] = useState(false);
-    const isOwned = user ? (serie?.posted_by.idUser === user.idUser) : false;
+    const isOwned = (serie?.posted_by.idUser === user.idUser) || user.role === 'administrator';
 
     // Color de texto para borde y texto dependiendo del status de la serie
     const colorStatus = {
@@ -59,7 +59,20 @@ const SerieProfilePage = ({ navigation, route }) => {
 
             // Obtener capitulos de la serie visualizada
             const data = await getChapters(serie.idSerie);
-            setChapters(data || []);
+
+            const SerieData = {
+                author: data.author,
+                cover: data.cover,
+                description: data.description,
+                idSerie: data.idSerie,
+                name: data.name,
+                status: data.status,
+                posted_by: data.posted_by,
+                posting_date: data.posting_date
+            }
+
+            setSerie(SerieData);
+            setChapters(data.chapters || []);
         })
         return willFocusSubscription;
     }, [])
@@ -67,11 +80,11 @@ const SerieProfilePage = ({ navigation, route }) => {
     const getChapters = async (serie) => {
         try {
             setLoading(true);
-            const response = await getChaptersOfSerie(serie);
+            const response = await getSerieData(serie);
             setLoading(false);
-
+            console.log(response);
             if (response.status === 200) {
-                return response.data.chapters;
+                return response.data;
             }
 
         } catch (error) {

@@ -65,22 +65,7 @@ const AddSeriePage = ({ navigation, route }) => {
     const handleSubmitSerie = async () => {
         try {
 
-            const data = new FormData();
-
-            data.append('serieName', serieName);
-            data.append('serieAuthor', serieAuthor);
-            data.append('serieStatus', serieStatus);
-            data.append('serieDescription', serieDescription);
-
-            const fileType = cover.uri.substr(cover.uri.lastIndexOf('.') + 1)
-
-            data.append('cover', {
-                uri: cover.uri,
-                height: cover.height,
-                width: cover.width,
-                name: `${serieName}.${fileType}`,
-                type: `image/${fileType}`
-            })
+            const data = generateFormData();
 
             setLoading(true);
             const response = await postUploadSerie(data);
@@ -106,7 +91,7 @@ const AddSeriePage = ({ navigation, route }) => {
         }
     }
 
-    const handleEditSerie = () => {
+    const handleEditSerie = async () => {
         try {
             setLoading(true);
             const formData = generateFormData();
@@ -161,6 +146,8 @@ const AddSeriePage = ({ navigation, route }) => {
                 name: `${serieName}.${fileType}`,
                 type: `image/${fileType}`
             })
+        }else{
+            data.append('cover', null);
         }
 
         return data;
