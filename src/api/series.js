@@ -63,7 +63,30 @@ export const getChaptersOfSerie = async (serie) => {
         const { data } = await axios.get(constants.getChapterstBySerie(serie));
 
         return data;
-    } catch (error) { 
+    } catch (error) {
         console.log(error.response.data);
+    }
+}
+
+export const putSerieById = async (formData, serie) => {
+    try {
+        await setToken();
+
+        const headers = {
+            Authorization: axios.defaults.headers.common['authorization'],
+            'Content-Type': `multipart/form-data`,
+        }
+
+        const { data } = await axios.put(constants.getChapterstBySerie(serie), formData, {
+            headers: headers,
+            transformRequest: (data, headers) => {
+                return formData; // this is doing the trick
+            },
+        });
+
+        return data;
+    } catch (error) {
+        console.log(error.response.data);
+        return error.response.data;
     }
 }

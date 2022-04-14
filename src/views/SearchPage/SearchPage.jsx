@@ -36,8 +36,8 @@ const SearchPage = ({ navigation }) => {
 
     useEffect(async () => {
         const data = await getSeries();
-        setAllSeries(data.data);
-        setSeries(data.data);
+        setAllSeries(data.data || []);
+        setSeries(data.data || []);
     }, [refresh])
 
     useEffect(() =>{
@@ -92,7 +92,7 @@ const SearchPage = ({ navigation }) => {
 
                 <Searchbar
                     style={{ marginTop: 10 }}
-                    placeholder='Search a Series'
+                    placeholder='Search series'
                     onChangeText={onChangeSearch}
                     value={searchQuery}
                 />

@@ -10,6 +10,7 @@ import {
     ChaptersSeparator,
     InfoText,
     MainContainer,
+    OptionsBar,
     Separator,
     SerieInfoContainer,
     SerieTitle,
@@ -21,6 +22,7 @@ import AvatarImage from '../../components/AvatarImage/AvatarImage';
 import NoContent from '../../components/NoContent/NoContent';
 import Loading from '../../components/Loading'
 import { Ionicons } from '@expo/vector-icons';
+import { Feather } from '@expo/vector-icons';
 
 
 // API
@@ -82,6 +84,18 @@ const SerieProfilePage = ({ navigation, route }) => {
         <MainContainer>
             <ScrollView>
                 <Loading enabled={loading} />
+                
+                {
+                    isOwned &&
+                    <OptionsBar>
+                        <TouchableOpacity
+                            onPress={() => navigation.push('AddSeriePage', {editMode: true, serie: serie})}
+                        >
+                            <Feather name="edit-2" size={25} color="gray" />
+                        </TouchableOpacity>
+                    </OptionsBar>
+                }
+
                 {/* Informacion principal de la serie */}
                 <SerieInfoContainer>
                     <AvatarImage

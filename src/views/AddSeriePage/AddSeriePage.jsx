@@ -14,16 +14,20 @@ import {
 import DropDownPicker from 'react-native-dropdown-picker';
 import AvatarImage from '../../components/AvatarImage/AvatarImage';
 import Loading from '../../components/Loading';
-import { postUploadSerie } from '../../api/series';
+import { postUploadSerie, putSerieById } from '../../api/series';
 
 
-const AddSeriePage = ({ navigation }) => {
+const AddSeriePage = ({ navigation, route }) => {
 
-    const [serieName, setSerieName] = useState('');
-    const [serieAuthor, setSerieAuthor] = useState('');
-    const [serieDescription, setSerieDescription] = useState('');
-    const [serieStatus, setSerieStatus] = useState('');
-    const [cover, setCover] = useState();
+    // Get Page Mode
+    const editMode = route?.params?.editMode || false;
+    const serieData = route?.params?.serie || null;
+
+    const [serieName, setSerieName] = useState(serieData?.name || '');
+    const [serieAuthor, setSerieAuthor] = useState(serieData?.author || '');
+    const [serieDescription, setSerieDescription] = useState(serieData?.description || '');
+    const [serieStatus, setSerieStatus] = useState(serieData?.status || '');
+    const [cover, setCover] = useState(serieData?.cover || null);
     const [dropDownVisible, setDropDownVisible] = useState(false);
     const [disbaledButton, setDisabledButton] = useState(true);
     const [loading, setLoading] = useState(false);
@@ -102,6 +106,66 @@ const AddSeriePage = ({ navigation }) => {
         }
     }
 
+    const handleEditSerie = () => {
+        try {
+            setLoading(true);
+            const formData = generateFormData();
+
+            const response = await putSerieById(formData, serieData.idSerie);
+            setLoading(false);
+
+            if (response.status === 200) {
+                Alert.alert(
+                    '',
+                    response.message,
+                    [
+                        {
+                            text: 'OK',
+                            onPress: () => navigation.goBack()
+                        }
+                    ]
+                )
+            } else {
+                Alert.alert(
+                    '',
+                    response.message,
+                    [
+                        {
+                            text: 'OK'
+                        }
+                    ]
+                )
+            }
+
+        } catch (error) {
+            setLoading(false);
+            console.log(error);
+        }
+    }
+
+    const generateFormData = () => {
+        const data = new FormData();
+
+        data.append('serieName', serieName);
+        data.append('serieAuthor', serieAuthor);
+        data.append('serieStatus', serieStatus);
+        data.append('serieDescription', serieDescription);
+
+        if (typeof cover !== 'string') {
+            const fileType = cover.uri.substr(cover.uri.lastIndexOf('.') + 1)
+
+            data.append('cover', {
+                uri: cover.uri,
+                height: cover.height,
+                width: cover.width,
+                name: `${serieName}.${fileType}`,
+                type: `image/${fileType}`
+            })
+        }
+
+        return data;
+    }
+
     return (
         <ScrollView>
             <Loading enabled={loading} />
@@ -111,7 +175,7 @@ const AddSeriePage = ({ navigation }) => {
                     <AvatarImage
                         marginBottom={20}
                         marginTop={0}
-                        src={undefined}
+                        src={editMode ? cover : undefined}
                         setImage={setCover}
                     />
 
@@ -154,10 +218,10 @@ const AddSeriePage = ({ navigation }) => {
                     {/* Add button */}
                     <AddButton
                         disabled={disbaledButton}
-                        onPress={handleSubmitSerie}
+                        onPress={editMode ? handleEditSerie : handleSubmitSerie}
                     >
                         <ButtonText>
-                            Add Serie
+                            {editMode ? 'Edit Serie' : 'Add Serie'}
                         </ButtonText>
                     </AddButton>
 

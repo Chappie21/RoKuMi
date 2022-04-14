@@ -94,7 +94,7 @@ const AvatarImage = ({
           marginLeft: marginLeft ? marginLeft : 0,
         }}
         source={
-          src ? {uri: src} : selectImage ? selectImage  : require("../../assets/RuKoMiLogo.png")
+            selectImage ? selectImage  :  src ? {uri: src} : require("../../assets/RuKoMiLogo.png")
         }
       ></Image>
     </View>
