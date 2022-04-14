@@ -9,9 +9,11 @@ import {
 } from './ChapterCard.styled'
 import { Feather } from '@expo/vector-icons';
 
-const ChapterCard = ({name, chapterNumber, publishedDate, isOwned = false}) => {
+const ChapterCard = ({name, chapterNumber, publishedDate, isOwned = false, onPress}) => {
     return(
-        <CardContainer>
+        <CardContainer
+            onPress={onPress}
+        >
             <MainContainer>
                 <InfoContainer>
                     <InfoText>{`${chapterNumber}:  ${name}`}</InfoText>

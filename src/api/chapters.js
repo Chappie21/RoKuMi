@@ -28,9 +28,19 @@ export const postNewChapter = async (formData, serie) => {
         });
 
         return data;
-        
+
     } catch (error) {
         console.log(error.response);
         return error.response.data;
+    }
+}
+
+export const getChapter = async (chapter) => {
+    try {
+        const { data } = await axios.get(constants.getChapter(chapter));
+
+        return data;
+    } catch (error) {
+        console.log(error.response);
     }
 }
