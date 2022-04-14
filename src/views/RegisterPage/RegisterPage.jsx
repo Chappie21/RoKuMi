@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Alert } from 'react-native';
-
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import {
     FormConatiner,
     MainContainer,
@@ -21,6 +21,12 @@ import validateEmail from '../../utils/EmailValidation';
 // API
 import { postRegister } from '../../api/auth';
 
+// STORAGE
+import { useDispatch } from 'react-redux';
+
+// ANCTIONS
+import { setUser } from '../../store/actions/UserActions';
+
 const RegisterPage = ({ navigation }) => {
 
     const [firstName, setFirstName] = useState('');
@@ -33,6 +39,8 @@ const RegisterPage = ({ navigation }) => {
     const [equalPasswords, setEqualPasswords] = useState(true);
     const [disbaledButton, setDisabledButton] = useState(true);
     const [isLoading, setIsLoading] = useState(false);
+
+    const dispatch = useDispatch();
 
     // Validacion de password
     useEffect(() => {
@@ -86,7 +94,7 @@ const RegisterPage = ({ navigation }) => {
             if(response.status === 201){
                 const {status, message, ...userData} = response;
 
-                await AsyncStorageLib.setItem('USER', JSON.stringify(userData));
+                await AsyncStorage.setItem('USER', JSON.stringify(userData));
         
                 // Alamacenar datos del usuario en el storage
                 dispatch(setUser(userData));
