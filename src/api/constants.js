@@ -5,5 +5,6 @@ export const constants = {
     seriesEP: 'serie',
     getUserSeries: 'user/trackingList',
     getChapterstBySerie: (serie) => `serie/${serie}`,
-    postChapter: (serie) => `chapter/${serie}`
+    postChapter: (serie) => `chapter/${serie}`,
+    getChapter: (chapter) => `chapter/${chapter}`
 }

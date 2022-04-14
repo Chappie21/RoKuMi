@@ -22,11 +22,13 @@ import NoContent from '../../components/NoContent/NoContent';
 import Loading from '../../components/Loading'
 import { Ionicons } from '@expo/vector-icons';
 
+
 // API
 import { getChaptersOfSerie } from '../../api/series';
 
 // UITLS
 import { getDateFormat } from '../../utils/DateFormat';
+
 
 
 const SerieProfilePage = ({ navigation, route }) => {
@@ -115,6 +117,7 @@ const SerieProfilePage = ({ navigation, route }) => {
                                     chapterNumber={chapter?.chapter_number}
                                     publishedDate={getDateFormat(chapter?.released)}
                                     isOwned={isOwned}
+                                    onPress={() => navigation.push('ReaderPage', {chapter: chapter})}
                                 />
                                 <Separator key={index} />
                             </>

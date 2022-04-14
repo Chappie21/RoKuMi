@@ -23,7 +23,8 @@
       "adaptiveIcon": {
         "foregroundImage": "./src/assets/RuKoMiLogo.png",
         "backgroundColor": "#FFFFFF"
-      }
+      },
+      "package": "com.chappie20.RoKuMi"
     },
     "web": {
       "favicon": "./src/assets/favicon.png"

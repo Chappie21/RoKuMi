@@ -23,6 +23,7 @@ import AddSeriePage from '../views/AddSeriePage/AddSeriePage';
 import SerieProfilePage from '../views/SerieProfilePage/SerieProfilePage';
 import AddChapterPage from '../views/AddChapterPage/AddChapterPage';
 import ImageBrowserPage from '../views/ImageBrowserPage/ImageBrowserPage';
+import ReaderPage from '../views/ReaderPage/ReaderPage';
 
 
 const Stack = createNativeStackNavigator();
@@ -99,6 +100,12 @@ const MainStack = () => {
                         component={ImageBrowserPage}
                         options={{ title: 'Selected 0 Pages'}}
                     />
+                   <Stack.Group screenOptions={{ presentation: 'modal' }}>
+                        <Stack.Screen
+                            name='ReaderPage'
+                            component={ReaderPage}
+                        />
+                   </Stack.Group>
                 </Stack.Navigator>
             </NavigationContainer>
         </>
