@@ -33,7 +33,7 @@ const FollowedSeriesPage = ({ navigation }) => {
             const response = await getUserTackingList();
 
             if (response.status) {
-                return response.series;
+                return response.tracking_list;
             }
 
         } catch (error) {
