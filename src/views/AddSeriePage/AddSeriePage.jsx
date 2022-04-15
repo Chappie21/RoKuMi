@@ -51,6 +51,13 @@ const AddSeriePage = ({ navigation, route }) => {
         }
     ];
 
+    // Confirmar modo de la vista y establecer titulo
+    useEffect(() =>{
+        navigation.setOptions({
+            title: editMode ? 'Edit Serie' : 'Add Serie'
+        });
+    }, [])
+
     // Confirmar formulario
     useEffect(() => {
 

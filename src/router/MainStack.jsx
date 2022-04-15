@@ -83,7 +83,6 @@ const MainStack = () => {
                     />
                     <Stack.Screen
                         name='AddSeriePage'
-                        options={{ title: 'Add Serie' }}
                         component={AddSeriePage}
                     />
                     <Stack.Screen
