@@ -16,9 +16,21 @@ export const getUserSeries = async () => {
         await setToken();
         const { data } = await axios.get(constants.getUserSeries);
 
-        return data.tracking_list;
+        return data.series;
     } catch (error) {
         console.log(error);
+    }
+}
+
+export const getUserTackingList = async () => {
+    try {
+        await setToken();
+        const { data } = await axios.get(constants.getUserSeries);
+
+        return data;
+    } catch (error) {
+        console.log(error);
+        return error.response;
     }
 }
 

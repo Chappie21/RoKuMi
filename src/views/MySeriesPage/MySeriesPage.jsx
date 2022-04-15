@@ -22,27 +22,21 @@ const MySeriesPage = ({ navigation }) => {
 
 
     const [series, setSeries] = useState([]);
-    const [refresh, setRefresh] = useState(false);
 
-    useEffect(() =>{
-        const willFocusSubscription = navigation.addListener('focus', () =>{
-            setRefresh(true);
+    useEffect(async () => {
+        const willFocusSubscription = navigation.addListener('focus',async  () => {
+            const series = await getSeries();
+
+            // setear series del usuario en el stado del componente
+            setSeries(series || []);
         })
         return willFocusSubscription;
     }, [])
-
-    useEffect(async () => {
-        const series = await getSeries();
-
-        // setear series del usuario en el stado del componente
-        setSeries(series || []);
-    }, [refresh])
 
     // Obtener sereies del usuario
     const getSeries = async () => {
         try {
             const response = await getUserSeries();
-            setRefresh(false);
             return response;
         } catch (error) {
             console.log(error);
@@ -69,11 +63,11 @@ const MySeriesPage = ({ navigation }) => {
                                     <Separator key={index} />
                                 </>
                             )
-                        : (
-                            <NoUpladSeries>
-                                <NoContent message="You haven't posted anything yet"/>
-                            </NoUpladSeries>
-                        )
+                            : (
+                                <NoUpladSeries>
+                                    <NoContent message="You haven't posted anything yet" />
+                                </NoUpladSeries>
+                            )
                     }
                 </MainContainer>
             </ScrollView>
@@ -82,9 +76,9 @@ const MySeriesPage = ({ navigation }) => {
             >
                 <ButtonContent>
                     <Ionicons
-                        style={{marginLeft: 11}}
-                        name="add-outline" 
-                        size={45} color="white" 
+                        style={{ marginLeft: 11 }}
+                        name="add-outline"
+                        size={45} color="white"
                     />
                 </ButtonContent>
             </AddButton>

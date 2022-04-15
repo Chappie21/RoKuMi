@@ -118,7 +118,7 @@ const SerieProfilePage = ({ navigation, route }) => {
 
     return (
         <MainContainer>
-            <ScrollView>
+            <ScrollView showsVerticalScrollIndicator={false}>
                 <Loading enabled={loading} />
 
                 {
