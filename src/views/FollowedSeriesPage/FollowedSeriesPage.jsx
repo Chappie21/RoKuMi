@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Text, ScrollView } from 'react-native';
+import { Text, ScrollView, View } from 'react-native';
 
 // COMPONENTS
 import {
@@ -48,9 +48,8 @@ const FollowedSeriesPage = ({ navigation }) => {
                     {
                         seriesFollowed.length !== 0 ?
                             seriesFollowed.map((serie, index) =>
-                                <>
+                                <View key={index}>
                                     <CardSerie
-                                        key={serie?.idSerie}
                                         name={serie?.name}
                                         author={serie?.author}
                                         postedBy={`${serie?.posted_by?.first_name} ${serie?.posted_by?.last_name}`}
@@ -58,8 +57,8 @@ const FollowedSeriesPage = ({ navigation }) => {
                                         cover={serie?.cover}
                                         onPress={() => navigation.push('SerieProfilePage', serie)}
                                     />
-                                    <Separator key={index} />
-                                </>
+                                    <Separator />
+                                </View>
                             )
                             : (
                                 <NoFollowedSeries>

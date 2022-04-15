@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Text, ScrollView } from 'react-native'
+import { Text, ScrollView, View } from 'react-native'
 import { Ionicons } from '@expo/vector-icons';
 // COMPONENTS
 import {
@@ -24,7 +24,7 @@ const MySeriesPage = ({ navigation }) => {
     const [series, setSeries] = useState([]);
 
     useEffect(async () => {
-        const willFocusSubscription = navigation.addListener('focus',async  () => {
+        const willFocusSubscription = navigation.addListener('focus', async () => {
             const series = await getSeries();
 
             // setear series del usuario en el stado del componente
@@ -50,9 +50,8 @@ const MySeriesPage = ({ navigation }) => {
                     {
                         series.length !== 0 ?
                             series.map((serie, index) =>
-                                <>
+                                <View key={index}>
                                     <CardSerie
-                                        key={serie?.id}
                                         name={serie?.name}
                                         author={serie?.author}
                                         postedBy={`${serie?.posted_by?.first_name} ${serie?.posted_by?.last_name}`}
@@ -60,8 +59,8 @@ const MySeriesPage = ({ navigation }) => {
                                         cover={serie?.cover}
                                         onPress={() => navigation.push('SerieProfilePage', serie)}
                                     />
-                                    <Separator key={index} />
-                                </>
+                                    <Separator />
+                                </View>
                             )
                             : (
                                 <NoUpladSeries>

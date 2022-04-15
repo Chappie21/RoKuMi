@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { ScrollView, TouchableOpacity, Alert } from 'react-native'
+import { ScrollView, TouchableOpacity, Alert, View } from 'react-native'
 import { AntDesign } from '@expo/vector-icons';
 import { useSelector } from "react-redux";
 
@@ -160,17 +160,16 @@ const SerieProfilePage = ({ navigation, route }) => {
                     chapters.length !== 0
                         ?
                         chapters.map((chapter, index) =>
-                            <>
+                            <View key={index}>
                                 <ChapterCard
-                                    key={chapter?.idChapter}
                                     name={chapter?.chapterName}
                                     chapterNumber={chapter?.chapter_number}
                                     publishedDate={getDateFormat(chapter?.released)}
                                     isOwned={isOwned}
                                     onPress={() => navigation.push('ReaderPage', { chapter: chapter })}
                                 />
-                                <Separator key={index} />
-                            </>
+                                <Separator />
+                            </View>
                         )
                         : <NoContent message="No chapters at the moment" xCenter={false} />
                 }
