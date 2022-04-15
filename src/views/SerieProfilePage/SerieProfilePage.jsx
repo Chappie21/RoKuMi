@@ -26,7 +26,7 @@ import { Feather } from '@expo/vector-icons';
 
 
 // API
-import { getSerieData } from '../../api/series';
+import { getSerieData, getFollowSerieById, getStopFollowSerieById } from '../../api/series';
 
 // UITLS
 import { getDateFormat } from '../../utils/DateFormat';
@@ -72,6 +72,7 @@ const SerieProfilePage = ({ navigation, route }) => {
 
             setSerie(SerieData);
             setChapters(data.chapters || []);
+            setIsFollow(data.following || false);
         })
         return willFocusSubscription;
     }, [])
@@ -92,11 +93,43 @@ const SerieProfilePage = ({ navigation, route }) => {
         }
     }
 
-    const handleFollowSerie = () => {
+    const handleFollowSerie = async () => {
 
         // confirmar si el usuario esta autenticado
         if (user) {
-            setIsFollow(!isFollow);
+
+            let response;
+
+            if (!isFollow) {
+                // Followrd serie
+                response = await getFollowSerieById(serie.idSerie);
+
+                if(response.status === 201){
+                    setIsFollow(true);
+                }
+
+            } else {
+                console.log('dejar de seguir');
+                // UnFollow serie
+                response = await getStopFollowSerieById(serie.idSerie);
+
+                if(response.status === 200){
+                    setIsFollow(false);
+                }
+            }
+
+            if (response.status !== 200 && response.status !== 201){
+                Alert.alert(
+                    '',
+                    response.message,
+                    [{
+                        text: 'OK',
+                        style: 'cancel'
+                    }]
+                )
+            }
+
+
         } else {
             Alert.alert(
                 'You are not logged in',

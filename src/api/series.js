@@ -25,7 +25,7 @@ export const getUserSeries = async () => {
 export const getUserTackingList = async () => {
     try {
         await setToken();
-        const { data } = await axios.get(constants.getUserSeries);
+        const { data } = await axios.get(constants.getUserSeriesFollowed);
 
         return data;
     } catch (error) {
@@ -99,6 +99,34 @@ export const putSerieById = async (formData, serie) => {
         return data;
     } catch (error) {
         console.log(error.response.data);
+        return error.response.data;
+    }
+}
+
+export const getFollowSerieById = async (serie) => {
+    try {
+        await setToken();
+
+        const { data } = await axios.post(constants.getFollowSerie(serie));
+
+        return data;
+
+    } catch (error) {
+        console.log(error.response);
+        return error.response.data;
+    }
+}
+
+export const getStopFollowSerieById = async (serie) => {
+    try {
+        await setToken();
+
+        const { data } = await axios.delete(constants.deleteStopFollowSerie(serie));
+
+        return data;
+
+    } catch (error) {
+        console.log(error.response);
         return error.response.data;
     }
 }
