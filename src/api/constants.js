@@ -3,8 +3,10 @@ export const constants = {
     postLogin: 'user/signIn',
     postRegister: 'user/signUp',
     seriesEP: 'serie',
-    getUserSeries: 'user/trackingList',
+    getUserSeries: 'serie/mySeries',
+    getUserSeriesFollowed: 'user/trackinglist',
     getChapterstBySerie: (serie) => `serie/${serie}`,
     postChapter: (serie) => `chapter/${serie}`,
-    getChapter: (chapter) => `chapter/${chapter}`
+    getChapter: (chapter) => `chapter/${chapter}`,
+    logOut: 'user/logOut'
 }

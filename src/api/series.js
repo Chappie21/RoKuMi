@@ -16,9 +16,21 @@ export const getUserSeries = async () => {
         await setToken();
         const { data } = await axios.get(constants.getUserSeries);
 
-        return data.tracking_list;
+        return data.series;
     } catch (error) {
         console.log(error);
+    }
+}
+
+export const getUserTackingList = async () => {
+    try {
+        await setToken();
+        const { data } = await axios.get(constants.getUserSeries);
+
+        return data;
+    } catch (error) {
+        console.log(error);
+        return error.response;
     }
 }
 
@@ -58,12 +70,35 @@ export const postUploadSerie = async (formData) => {
 }
 
 // Obtener Capitulos de una serie
-export const getChaptersOfSerie = async (serie) => {
+export const getSerieData = async (serie) => {
     try {
         const { data } = await axios.get(constants.getChapterstBySerie(serie));
 
         return data;
-    } catch (error) { 
+    } catch (error) {
         console.log(error.response.data);
+    }
+}
+
+export const putSerieById = async (formData, serie) => {
+    try {
+        await setToken();
+
+        const headers = {
+            Authorization: axios.defaults.headers.common['authorization'],
+            'Content-Type': `multipart/form-data`,
+        }
+
+        const { data } = await axios.put(constants.getChapterstBySerie(serie), formData, {
+            headers: headers,
+            transformRequest: (data, headers) => {
+                return formData; // this is doing the trick
+            },
+        });
+
+        return data;
+    } catch (error) {
+        console.log(error.response.data);
+        return error.response.data;
     }
 }

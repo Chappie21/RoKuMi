@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Text, ScrollView } from 'react-native'
+import { Text, ScrollView, View } from 'react-native'
 import { Ionicons } from '@expo/vector-icons';
 // COMPONENTS
 import {
@@ -22,27 +22,21 @@ const MySeriesPage = ({ navigation }) => {
 
 
     const [series, setSeries] = useState([]);
-    const [refresh, setRefresh] = useState(false);
 
-    useEffect(() =>{
-        const willFocusSubscription = navigation.addListener('focus', () =>{
-            setRefresh(true);
+    useEffect(async () => {
+        const willFocusSubscription = navigation.addListener('focus', async () => {
+            const series = await getSeries();
+
+            // setear series del usuario en el stado del componente
+            setSeries(series || []);
         })
         return willFocusSubscription;
     }, [])
-
-    useEffect(async () => {
-        const series = await getSeries();
-
-        // setear series del usuario en el stado del componente
-        setSeries(series || []);
-    }, [refresh])
 
     // Obtener sereies del usuario
     const getSeries = async () => {
         try {
             const response = await getUserSeries();
-            setRefresh(false);
             return response;
         } catch (error) {
             console.log(error);
@@ -56,9 +50,8 @@ const MySeriesPage = ({ navigation }) => {
                     {
                         series.length !== 0 ?
                             series.map((serie, index) =>
-                                <>
+                                <View key={index}>
                                     <CardSerie
-                                        key={serie?.id}
                                         name={serie?.name}
                                         author={serie?.author}
                                         postedBy={`${serie?.posted_by?.first_name} ${serie?.posted_by?.last_name}`}
@@ -66,14 +59,14 @@ const MySeriesPage = ({ navigation }) => {
                                         cover={serie?.cover}
                                         onPress={() => navigation.push('SerieProfilePage', serie)}
                                     />
-                                    <Separator key={index} />
-                                </>
+                                    <Separator />
+                                </View>
                             )
-                        : (
-                            <NoUpladSeries>
-                                <NoContent message="You haven't posted anything yet"/>
-                            </NoUpladSeries>
-                        )
+                            : (
+                                <NoUpladSeries>
+                                    <NoContent message="You haven't posted anything yet" />
+                                </NoUpladSeries>
+                            )
                     }
                 </MainContainer>
             </ScrollView>
@@ -82,9 +75,9 @@ const MySeriesPage = ({ navigation }) => {
             >
                 <ButtonContent>
                     <Ionicons
-                        style={{marginLeft: 11}}
-                        name="add-outline" 
-                        size={45} color="white" 
+                        style={{ marginLeft: 11 }}
+                        name="add-outline"
+                        size={45} color="white"
                     />
                 </ButtonContent>
             </AddButton>

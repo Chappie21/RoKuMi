@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { ScrollView } from 'react-native'
+import { ScrollView, View } from 'react-native'
 import { Searchbar, Text } from 'react-native-paper';
 import {
     MainContainer,
@@ -36,8 +36,8 @@ const SearchPage = ({ navigation }) => {
 
     useEffect(async () => {
         const data = await getSeries();
-        setAllSeries(data.data);
-        setSeries(data.data);
+        setAllSeries(data.data || []);
+        setSeries(data.data || []);
     }, [refresh])
 
     useEffect(() =>{
@@ -92,7 +92,7 @@ const SearchPage = ({ navigation }) => {
 
                 <Searchbar
                     style={{ marginTop: 10 }}
-                    placeholder='Search a Series'
+                    placeholder='Search series'
                     onChangeText={onChangeSearch}
                     value={searchQuery}
                 />
@@ -101,9 +101,8 @@ const SearchPage = ({ navigation }) => {
                     {
                         series.length !== 0 ?
                             series.map((serie, index) =>
-                                <>
+                                <View key={index}>
                                     <CardSerie
-                                        key={serie?.id}
                                         name={serie?.name}
                                         author={serie?.author}
                                         postedBy={`${serie?.posted_by?.first_name} ${serie?.posted_by?.last_name}`}
@@ -111,8 +110,8 @@ const SearchPage = ({ navigation }) => {
                                         cover={serie?.cover}
                                         onPress={() => navigation.push('SerieProfilePage', serie)}
                                     />
-                                    <Separator key={index} />
-                                </>
+                                    <Separator />
+                                </View>
                             )
                             : (
                                

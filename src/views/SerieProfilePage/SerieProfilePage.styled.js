@@ -6,6 +6,13 @@ export const MainContainer = styled.View`
     padding: 2%
 `
 
+export const OptionsBar = styled.View`
+    width: 100%
+    display: flex
+    flexDirection: row
+    justifyContent: flex-end
+`
+
 export const SerieInfoContainer = styled.View`
     marginTop: 2%
     display: flex
