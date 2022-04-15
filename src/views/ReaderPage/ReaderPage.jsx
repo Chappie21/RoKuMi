@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { ScrollView, Dimensions, Image, TouchableOpacity, View } from 'react-native'
+import { useSelector } from 'react-redux';
 
 // COMPONENTS
 import {
@@ -8,10 +9,12 @@ import {
     OptionRow,
     OptionsMenu,
     OptionText,
-    PagesContainer
+    PagesContainer,
+    HeaderIcons
 } from './ReaderPage.styled'
 import Carousel, { ParallaxImage } from 'react-native-snap-carousel'
 import { Ionicons } from '@expo/vector-icons';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 
 // API
@@ -23,6 +26,7 @@ const ReaderPage = ({ navigation, route }) => {
     const [pages, setPages] = useState([]);
     const [pageNumber, setPageNumber] = useState(0);
     const [verticalMode, setVerticalMode] = useState(true);
+    const user = useSelector(state => state.user.user);
 
     let carouselRef = useRef(null);
 
@@ -43,11 +47,21 @@ const ReaderPage = ({ navigation, route }) => {
             headerTitleAlign: 'center',
             headerRight: () => {
                 return (
-                    <TouchableOpacity
-                        onPress={() => handleShowMenu()}
-                    >
-                        <Ionicons name="ios-settings-outline" size={24} color="gray" />
-                    </TouchableOpacity>
+                    <HeaderIcons>
+                        {
+                            user &&
+                            <TouchableOpacity
+                                onPress={() => navigation.push('CommentsPage', { chapter: chapter?.idChapter })}
+                            >
+                                <MaterialCommunityIcons name="comment-outline" size={24} color="gray" style={{ marginRight: 20 }} />
+                            </TouchableOpacity>
+                        }
+                        <TouchableOpacity
+                            onPress={() => handleShowMenu()}
+                        >
+                            <Ionicons name="ios-settings-outline" size={24} color="gray" />
+                        </TouchableOpacity>
+                    </HeaderIcons>
                 )
             }
         })
@@ -76,8 +90,8 @@ const ReaderPage = ({ navigation, route }) => {
         )
     }
 
-    const handleShowMenu = () =>{
-       
+    const handleShowMenu = () => {
+
     }
 
     return (

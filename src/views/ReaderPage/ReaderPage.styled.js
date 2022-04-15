@@ -35,3 +35,10 @@ export const OptionText = styled.Text`
     flex: 1
     color: gray
 `
+
+export const HeaderIcons = styled.View`
+    display: flex
+    flexDirection: row
+    alignItems: center
+    justifyContent: space-evenly
+`

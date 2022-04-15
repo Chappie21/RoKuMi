@@ -24,6 +24,7 @@ import SerieProfilePage from '../views/SerieProfilePage/SerieProfilePage';
 import AddChapterPage from '../views/AddChapterPage/AddChapterPage';
 import ImageBrowserPage from '../views/ImageBrowserPage/ImageBrowserPage';
 import ReaderPage from '../views/ReaderPage/ReaderPage';
+import CommentsPage from '../views/CommentsPage/CommentsPage';
 
 
 const Stack = createNativeStackNavigator();
@@ -103,6 +104,10 @@ const MainStack = () => {
                         <Stack.Screen
                             name='ReaderPage'
                             component={ReaderPage}
+                        />
+                        <Stack.Screen
+                            name='CommentsPage'
+                            component={CommentsPage}
                         />
                    </Stack.Group>
                 </Stack.Navigator>
