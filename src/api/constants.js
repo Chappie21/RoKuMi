@@ -11,5 +11,5 @@ export const constants = {
     logOut: 'user/logOut',
     getFollowSerie: (serie) => `serie/track/${serie}`,
     deleteStopFollowSerie: (serie) => `serie/untrack/${serie}`,
-    getCommentsOfChapter: (chapter) => `comment/${chapter}`
+    commentChapterId: (chapter) => `comment/${chapter}`
 }

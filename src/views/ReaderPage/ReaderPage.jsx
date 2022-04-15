@@ -44,7 +44,6 @@ const ReaderPage = ({ navigation, route }) => {
     useState(async () => {
         navigation.setOptions({
             title: chapter.chapterName,
-            headerTitleAlign: 'center',
             headerRight: () => {
                 return (
                     <HeaderIcons>

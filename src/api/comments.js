@@ -13,9 +13,27 @@ const setToken = async () => {
 
 export const getCommentsOfChapter = async (chapter) => {
     try {
-        const { data } = await axios.get(constants.getCommentsOfChapter(chapter));
+        const { data } = await axios.get(constants.commentChapterId(chapter));
 
         return data;
+    } catch (error) {
+        console.log(error);
+        return error.response.data;
+    }
+}
+
+export const postCommentByChapter = async (chapter, comment, parent) => {
+    try {
+        await setToken();
+        const body = {
+            commentText: comment,
+            parentOf_id: parent
+        }
+
+        const { data } = await axios.post(constants.commentChapterId(chapter), body);
+
+        return data;
+
     } catch (error) {
         console.log(error);
         return error.response.data;
