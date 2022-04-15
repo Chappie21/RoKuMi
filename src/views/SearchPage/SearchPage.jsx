@@ -24,32 +24,27 @@ const SearchPage = ({ navigation }) => {
     const [searchQuery, setSearchQuery] = useState('');
     const [allSeries, setAllSeries] = useState([]);
     const [series, setSeries] = useState([]);
-    const [refresh, setRefresh] = useState(false);
     const [loading, setLoading] = useState(false);
 
-    useEffect(() =>{
-        const willFocusSubscription = navigation.addListener('focus', () =>{
-            setRefresh(true);
+    useEffect(() => {
+        const willFocusSubscription = navigation.addListener('focus', async () => {
+            const data = await getSeries();
+            setAllSeries(data.data || []);
+            setSeries(data.data || []);
         })
         return willFocusSubscription;
     }, [])
 
-    useEffect(async () => {
-        const data = await getSeries();
-        setAllSeries(data.data || []);
-        setSeries(data.data || []);
-    }, [refresh])
+    useEffect(() => {
 
-    useEffect(() =>{
-        
         // FILTRO DE BSUQUEDA POR INICIAL DE PALABRA
         const newSeriesList = allSeries.filter(serie => {
 
-            if(
+            if (
                 serie.name.toLowerCase().startsWith(searchQuery.toLowerCase()) ||
                 serie.author.toLowerCase().startsWith(searchQuery.toLowerCase()) ||
                 `${serie?.posted_by?.first_name} ${serie?.posted_by?.last_name}`.toLowerCase().startsWith(searchQuery.toLowerCase())
-            ){
+            ) {
                 return serie;
             }
 
@@ -68,8 +63,6 @@ const SearchPage = ({ navigation }) => {
             const response = await getAllSeries();
             setLoading(false);
 
-            setRefresh(false);
-
             if (response.status === "200") {
                 return response;
             } else {
@@ -79,7 +72,6 @@ const SearchPage = ({ navigation }) => {
         } catch (error) {
             console.log(error);
             setLoading(false);
-            setRefresh(false);
             return [];
         }
     }
@@ -114,9 +106,9 @@ const SearchPage = ({ navigation }) => {
                                 </View>
                             )
                             : (
-                               
-                                    <NoContent message="We didn't find anything" />
-                                
+
+                                <NoContent message="We didn't find anything" />
+
                             )
                     }
                 </SeriesContainer>
