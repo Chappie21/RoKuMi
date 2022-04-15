@@ -6,5 +6,6 @@ export const constants = {
     getUserSeries: 'user/trackingList',
     getChapterstBySerie: (serie) => `serie/${serie}`,
     postChapter: (serie) => `chapter/${serie}`,
-    getChapter: (chapter) => `chapter/${chapter}`
+    getChapter: (chapter) => `chapter/${chapter}`,
+    logOut: 'user/logOut'
 }

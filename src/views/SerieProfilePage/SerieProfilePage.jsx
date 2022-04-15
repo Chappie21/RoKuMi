@@ -40,7 +40,7 @@ const SerieProfilePage = ({ navigation, route }) => {
     const [chapters, setChapters] = useState([]);
     const [loading, setLoading] = useState(false);
     const [isFollow, setIsFollow] = useState(false);
-    const isOwned = (serie?.posted_by.idUser === user.idUser) || user.role === 'administrator';
+    const isOwned = user ? (serie?.posted_by.idUser === user?.idUser || user?.role === 'administrator') : false
 
     // Color de texto para borde y texto dependiendo del status de la serie
     const colorStatus = {
@@ -82,7 +82,7 @@ const SerieProfilePage = ({ navigation, route }) => {
             setLoading(true);
             const response = await getSerieData(serie);
             setLoading(false);
-            console.log(response);
+
             if (response.status === 200) {
                 return response.data;
             }
