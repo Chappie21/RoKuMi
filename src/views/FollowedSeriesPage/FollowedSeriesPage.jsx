@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Text, ScrollView, View } from 'react-native';
+import { Text, ScrollView, View, Alert } from 'react-native';
 
 // COMPONENTS
 import {
@@ -32,8 +32,19 @@ const FollowedSeriesPage = ({ navigation }) => {
         try {
             const response = await getUserTackingList();
 
-            if (response.status) {
+            if (response.status === 200) {
                 return response.tracking_list;
+            } else {
+                Alert.alert(
+                    '',
+                    response.message,
+                    [
+                        {
+                            text: 'OK',
+                            style: 'cancel'
+                        }
+                    ]
+                )
             }
 
         } catch (error) {

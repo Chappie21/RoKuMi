@@ -109,7 +109,6 @@ const SerieProfilePage = ({ navigation, route }) => {
                 }
 
             } else {
-                console.log('dejar de seguir');
                 // UnFollow serie
                 response = await getStopFollowSerieById(serie.idSerie);
 
