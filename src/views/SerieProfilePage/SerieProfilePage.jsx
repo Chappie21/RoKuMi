@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { ScrollView, TouchableOpacity, Alert, View } from 'react-native'
-import { AntDesign } from '@expo/vector-icons';
 import { useSelector } from "react-redux";
 
 // COMPONENTS
@@ -21,13 +20,12 @@ import ChapterCard from '../../components/ChapterCard/ChapterCard';
 import AvatarImage from '../../components/AvatarImage/AvatarImage';
 import NoContent from '../../components/NoContent/NoContent';
 import Loading from '../../components/Loading'
-import { Ionicons } from '@expo/vector-icons';
-import { Feather } from '@expo/vector-icons';
+import { Ionicons, Feather, AntDesign } from '@expo/vector-icons';
 import Toast from 'react-native-root-toast'
 
 
 // API
-import { getSerieData, getFollowSerieById, getStopFollowSerieById } from '../../api/series';
+import { getSerieData, getFollowSerieById, getStopFollowSerieById, deleteSerieById } from '../../api/series';
 
 // UITLS
 import { getDateFormat } from '../../utils/DateFormat';
@@ -162,6 +160,54 @@ const SerieProfilePage = ({ navigation, route }) => {
 
     }
 
+    const previulyDelete = () =>{
+        Alert.alert(
+            'Are you sure?',
+            '',
+            [
+                {
+                    text: "It's a prank bro",
+                    style: 'cancel'
+                },
+                {
+                    text: "Yes, i hate this.",
+                    onPress: () => handleDeleteSerie()
+                }
+            ]
+        )
+    }
+
+    const handleDeleteSerie = async () => {
+        try {
+            setLoading(true);
+            const response = await deleteSerieById(serie.idSerie);
+            setLoading(false);
+
+            if(response.status === 200){
+                Toast.show(`Deleted ${serie.name}`, {
+                    duration: Toast.durations.SHORT,
+                    backgroundColor: 'white',
+                    textColor: 'black',
+                    position: -50
+                });
+                navigation.goBack();
+            }else{
+                Alert.alert(
+                    '',
+                    response.message,
+                    [{
+                        text: 'OK',
+                        style: 'cancel'
+                    }]
+                );
+            }
+
+        } catch (error) {
+            console.log(error);
+            setLoading(false);
+        }
+    }
+
     return (
         <MainContainer>
             <ScrollView showsVerticalScrollIndicator={false}>
@@ -170,6 +216,11 @@ const SerieProfilePage = ({ navigation, route }) => {
                 {
                     isOwned &&
                     <OptionsBar>
+                        <TouchableOpacity
+                            onPress={previulyDelete}
+                        >
+                            <AntDesign name="delete" size={25} color="red" />
+                        </TouchableOpacity>
                         <TouchableOpacity
                             onPress={() => navigation.push('AddSeriePage', { editMode: true, serie: serie })}
                         >

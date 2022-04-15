@@ -130,3 +130,16 @@ export const getStopFollowSerieById = async (serie) => {
         return error.response.data;
     }
 }
+
+export const deleteSerieById = async (serie) =>{
+    try{
+        await setToken();
+
+        const { data } =  await axios.delete(constants.getChapterstBySerie(serie));
+
+        return data;
+    }catch(error){
+        console.log(error.response.data);
+        return error.response.data;
+    }
+}
