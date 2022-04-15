@@ -23,6 +23,7 @@ import NoContent from '../../components/NoContent/NoContent';
 import Loading from '../../components/Loading'
 import { Ionicons } from '@expo/vector-icons';
 import { Feather } from '@expo/vector-icons';
+import Toast from 'react-native-root-toast'
 
 
 // API
@@ -104,20 +105,33 @@ const SerieProfilePage = ({ navigation, route }) => {
                 // Followrd serie
                 response = await getFollowSerieById(serie.idSerie);
 
-                if(response.status === 201){
+                if (response.status === 201) {
                     setIsFollow(true);
+                    Toast.show(`Following ${serie.name}`, {
+                        duration: Toast.durations.SHORT,
+                        backgroundColor: 'white',
+                        textColor: 'black',
+                        position: -50
+                    });
                 }
 
             } else {
                 // UnFollow serie
                 response = await getStopFollowSerieById(serie.idSerie);
 
-                if(response.status === 200){
+                if (response.status === 200) {
                     setIsFollow(false);
+                    // Followed Message
+                    Toast.show(`Unfollowing ${serie.name}`, {
+                        duration: Toast.durations.SHORT,
+                        backgroundColor: 'white',
+                        textColor: 'black',
+                        position: -50
+                    });
                 }
             }
 
-            if (response.status !== 200 && response.status !== 201){
+            if (response.status !== 200 && response.status !== 201) {
                 Alert.alert(
                     '',
                     response.message,
