@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { ScrollView, TouchableOpacity } from 'react-native'
+import { ScrollView, TouchableOpacity, Alert } from 'react-native'
 import { AntDesign } from '@expo/vector-icons';
 import { useSelector } from "react-redux";
 
@@ -30,7 +30,6 @@ import { getSerieData } from '../../api/series';
 
 // UITLS
 import { getDateFormat } from '../../utils/DateFormat';
-
 
 
 const SerieProfilePage = ({ navigation, route }) => {
@@ -93,16 +92,40 @@ const SerieProfilePage = ({ navigation, route }) => {
         }
     }
 
+    const handleFollowSerie = () => {
+
+        // confirmar si el usuario esta autenticado
+        if (user) {
+            setIsFollow(!isFollow);
+        } else {
+            Alert.alert(
+                'You are not logged in',
+                'Sign in to enjoy other features',
+                [
+                    {
+                        text: 'Nah',
+                        style: 'cancel'
+                    },
+                    {
+                        text: 'Login in!',
+                        onPress: () => navigation.push('LoginPage')
+                    }
+                ]
+            )
+        }
+
+    }
+
     return (
         <MainContainer>
             <ScrollView>
                 <Loading enabled={loading} />
-                
+
                 {
                     isOwned &&
                     <OptionsBar>
                         <TouchableOpacity
-                            onPress={() => navigation.push('AddSeriePage', {editMode: true, serie: serie})}
+                            onPress={() => navigation.push('AddSeriePage', { editMode: true, serie: serie })}
                         >
                             <Feather name="edit-2" size={25} color="gray" />
                         </TouchableOpacity>
@@ -127,7 +150,7 @@ const SerieProfilePage = ({ navigation, route }) => {
                 <ChaptersSeparator>
                     <InfoText>Chapters</InfoText>
                     <TouchableOpacity
-                        onPress={() => setIsFollow(!isFollow)}
+                        onPress={handleFollowSerie}
                     >
                         <AntDesign name={isFollow ? 'heart' : 'hearto'} size={24} color='#ab47bc' />
                     </TouchableOpacity>
@@ -144,7 +167,7 @@ const SerieProfilePage = ({ navigation, route }) => {
                                     chapterNumber={chapter?.chapter_number}
                                     publishedDate={getDateFormat(chapter?.released)}
                                     isOwned={isOwned}
-                                    onPress={() => navigation.push('ReaderPage', {chapter: chapter})}
+                                    onPress={() => navigation.push('ReaderPage', { chapter: chapter })}
                                 />
                                 <Separator key={index} />
                             </>
