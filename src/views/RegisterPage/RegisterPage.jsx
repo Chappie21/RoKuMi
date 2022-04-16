@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Alert } from 'react-native';
+import { Alert, ScrollView } from 'react-native';
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import {
     FormConatiner,
@@ -91,16 +91,16 @@ const RegisterPage = ({ navigation }) => {
             const response = await postRegister(firstName, lastName, email, password);
             setIsLoading(false);
 
-            if(response.status === 201){
-                const {status, message, ...userData} = response;
+            if (response.status === 201) {
+                const { status, message, ...userData } = response;
 
                 await AsyncStorage.setItem('USER', JSON.stringify(userData));
-        
+
                 // Alamacenar datos del usuario en el storage
                 dispatch(setUser(userData));
 
                 navigation.push('TabsPage')
-            }else{
+            } else {
                 Alert.alert(
                     '',
                     response.message,
@@ -120,90 +120,94 @@ const RegisterPage = ({ navigation }) => {
 
     return (
         <MainContainer>
+            <ScrollView
+                contentContainerStyle={{ alignItems: "center" }}
+                overScrollMode="never"
+            >
+                <Loading enabled={isLoading} flat={undefined} />
 
-            <Loading enabled={isLoading} flat={undefined} />
+                <Title>Ro-Ku-Mi</Title>
+                <SubTitle>Your reader in always site</SubTitle>
 
-            <Title>Ro-Ku-Mi</Title>
-            <SubTitle>Your reader in always site</SubTitle>
+                <FormConatiner>
 
-            <FormConatiner>
+                    {/* FirstName */}
+                    <TextInput
+                        label='First Name'
+                        value={firstName}
+                        onChangeText={setFirstName}
+                    />
 
-                {/* FirstName */}
-                <TextInput
-                    label='First Name'
-                    value={firstName}
-                    onChangeText={setFirstName}
-                />
+                    {/* LastName */}
+                    <TextInput
+                        label='Last Name'
+                        value={lastName}
+                        onChangeText={setlastName}
+                    />
 
-                {/* LastName */}
-                <TextInput
-                    label='Last Name'
-                    value={lastName}
-                    onChangeText={setlastName}
-                />
+                    {/* Email */}
+                    <TextInput
+                        label='Email  @'
+                        keyboardType='email-address'
+                        value={email}
+                        onChangeText={setEmail}
+                        error={email && validEmail === false}
+                    />
+                    {
+                        email && validEmail === false ?
+                            <InfoText type="error">Email not valid</InfoText>
+                            : null
+                    }
 
-                {/* Email */}
-                <TextInput
-                    label='Email  @'
-                    keyboardType='email-address'
-                    value={email}
-                    onChangeText={setEmail}
-                    error={email && validEmail === false}
-                />
-                {
-                    email && validEmail === false ?
-                        <InfoText type="error">Email not valid</InfoText>
-                        : null
-                }
+                    {/* Password */}
+                    <TextInput
+                        label='Password'
+                        value={password}
+                        secureTextEntry
+                        textContentType="oneTimeCode"
+                        onChangeText={setPassword}
+                        error={password && validPassword === false}
+                    />
 
-                {/* Password */}
-                <TextInput
-                    label='Password'
-                    value={password}
-                    secureTextEntry
-                    textContentType="oneTimeCode"
-                    onChangeText={setPassword}
-                    error={password && validPassword === false}
-                />
+                    {password && validPassword === false && password?.length < 6 ? (
+                        <InfoText type="error">
+                            Password must have at least 6 characters
+                        </InfoText>
+                    ) : password && !/[a-zA-Z]/.test(password) ? (
+                        <InfoText type="error">
+                            Password must contain at least one letter
+                        </InfoText>
+                    ) : password && !/[0-9]/.test(password) ? (
+                        <InfoText type="error">
+                            Password must contain at least one letter
+                        </InfoText>
+                    ) : null}
 
-                {password && validPassword === false && password?.length < 6 ? (
-                    <InfoText type="error">
-                        Password must have at least 6 characters
-                    </InfoText>
-                ) : password && !/[a-zA-Z]/.test(password) ? (
-                    <InfoText type="error">
-                        Password must contain at least one letter
-                    </InfoText>
-                ) : password && !/[0-9]/.test(password) ? (
-                    <InfoText type="error">
-                        Password must contain at least one letter
-                    </InfoText>
-                ) : null}
+                    {/* Confirm Password */}
+                    <TextInput
+                        label='Confirm Password'
+                        value={confirmPassword}
+                        secureTextEntry
+                        textContentType="oneTimeCode"
+                        onChangeText={setConfirmPassword}
+                        error={confirmPassword && equalPasswords === false}
+                    />
+                    {confirmPassword && equalPasswords === false ? (
+                        <InfoText type="error">Passwords are not equal</InfoText>
+                    ) : null}
 
-                {/* Confirm Password */}
-                <TextInput
-                    label='Confirm Password'
-                    value={confirmPassword}
-                    secureTextEntry
-                    textContentType="oneTimeCode"
-                    onChangeText={setConfirmPassword}
-                    error={confirmPassword && equalPasswords === false}
-                />
-                {confirmPassword && equalPasswords === false ? (
-                    <InfoText type="error">Passwords are not equal</InfoText>
-                ) : null}
+                    <RegisterButton
+                        disabled={disbaledButton}
+                        onPress={handleRegisterUser}
+                    >
+                        <ButtonText>Komikku no sekai ni hairu</ButtonText>
+                    </RegisterButton>
 
-                <RegisterButton
-                    disabled={disbaledButton}
-                    onPress={handleRegisterUser}
-                >
-                    <ButtonText>Komikku no sekai ni hairu</ButtonText>
-                </RegisterButton>
-
-                <LoginText>
-                    Already a reader? <LoginHiperText onPress={() => navigation.goBack()}>  Signin</LoginHiperText>
-                </LoginText>
-            </FormConatiner>
+                    <LoginText>
+                        Already a reader? <LoginHiperText onPress={() => navigation.goBack()}>  Signin</LoginHiperText>
+                    </LoginText>
+                </FormConatiner>
+            </ScrollView>
         </MainContainer>
     )
 }

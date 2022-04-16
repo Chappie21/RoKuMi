@@ -22,6 +22,7 @@ import NoContent from '../../components/NoContent/NoContent';
 import Loading from '../../components/Loading'
 import { Ionicons, Feather, AntDesign } from '@expo/vector-icons';
 import Toast from 'react-native-root-toast'
+import ModalContainer from "../../components/ModalContainer";
 
 
 // API
@@ -39,6 +40,7 @@ const SerieProfilePage = ({ navigation, route }) => {
     const [chapters, setChapters] = useState([]);
     const [loading, setLoading] = useState(false);
     const [isFollow, setIsFollow] = useState(false);
+    const [showDescription, setShowDescription] = useState(false);
     const isOwned = user ? (serie?.posted_by.idUser === user?.idUser || user?.role === 'administrator') : false
 
     // Color de texto para borde y texto dependiendo del status de la serie
@@ -232,7 +234,7 @@ const SerieProfilePage = ({ navigation, route }) => {
             const response = await deleteChapter(chapter.idChapter);
             setLoading(false);
 
-            if(response.status === 200){
+            if (response.status === 200) {
 
                 // delete chapter eliminated
                 let newChapterList = chapters.filter(chap => chap.idChapter !== chapter.idChapter);
@@ -245,7 +247,7 @@ const SerieProfilePage = ({ navigation, route }) => {
                     textColor: 'black',
                     position: -50
                 });
-            }else{
+            } else {
                 Alert.alert(
                     '',
                     response.message,
@@ -285,10 +287,14 @@ const SerieProfilePage = ({ navigation, route }) => {
 
                 {/* Informacion principal de la serie */}
                 <SerieInfoContainer>
-                    <AvatarImage
-                        src={serie?.cover}
-                        size={200}
-                    />
+                    <TouchableOpacity
+                        onPress={() => setShowDescription(true)}
+                    >
+                        <AvatarImage
+                            src={serie?.cover}
+                            size={200}
+                        />
+                    </TouchableOpacity>
                     <SerieTitle>{serie?.name}</SerieTitle>
                     <InfoText>{serie?.author}</InfoText>
                     <StatusBorder color={colorStatus[serie?.status]}>
@@ -336,6 +342,15 @@ const SerieProfilePage = ({ navigation, route }) => {
                     />
                 </AddButton>
             }
+
+
+            <ModalContainer
+                visible={showDescription}
+                title={serie?.name}
+                info={serie?.description}
+                onModalClose={() => setShowDescription(false)}
+            />
+
         </MainContainer>
     )
 }
