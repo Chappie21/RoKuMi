@@ -26,6 +26,7 @@ import Toast from 'react-native-root-toast'
 
 // API
 import { getSerieData, getFollowSerieById, getStopFollowSerieById, deleteSerieById } from '../../api/series';
+import { deleteChapter } from '../../api/chapters';
 
 // UITLS
 import { getDateFormat } from '../../utils/DateFormat';
@@ -68,7 +69,6 @@ const SerieProfilePage = ({ navigation, route }) => {
                 posted_by: data.posted_by,
                 posting_date: data.posting_date
             }
-
             setSerie(SerieData);
             setChapters(data.chapters || []);
             setIsFollow(data.following || false);
@@ -160,7 +160,7 @@ const SerieProfilePage = ({ navigation, route }) => {
 
     }
 
-    const previulyDelete = () =>{
+    const previulyDelete = () => {
         Alert.alert(
             'Are you sure?',
             '',
@@ -183,7 +183,7 @@ const SerieProfilePage = ({ navigation, route }) => {
             const response = await deleteSerieById(serie.idSerie);
             setLoading(false);
 
-            if(response.status === 200){
+            if (response.status === 200) {
                 Toast.show(`Deleted ${serie.name}`, {
                     duration: Toast.durations.SHORT,
                     backgroundColor: 'white',
@@ -191,7 +191,7 @@ const SerieProfilePage = ({ navigation, route }) => {
                     position: -50
                 });
                 navigation.goBack();
-            }else{
+            } else {
                 Alert.alert(
                     '',
                     response.message,
@@ -205,6 +205,60 @@ const SerieProfilePage = ({ navigation, route }) => {
         } catch (error) {
             console.log(error);
             setLoading(false);
+        }
+    }
+
+    const previuslyDeleteChapter = (chapter) => {
+        Alert.alert(
+            'Are you sure?',
+            '',
+            [
+                {
+                    text: "Mmmmm, nop",
+                    style: 'cancel'
+                },
+                {
+                    text: "Yes, bro",
+                    onPress: () => handleDeleteChapter(chapter)
+                }
+            ]
+        )
+    }
+
+    const handleDeleteChapter = async (chapter) => {
+        try {
+
+            setLoading(true);
+            const response = await deleteChapter(chapter.idChapter);
+            setLoading(false);
+
+            if(response.status === 200){
+
+                // delete chapter eliminated
+                let newChapterList = chapters.filter(chap => chap.idChapter !== chapter.idChapter);
+
+                setChapters(newChapterList);
+
+                Toast.show(`Deleted ${chapter.chapterName}`, {
+                    duration: Toast.durations.SHORT,
+                    backgroundColor: 'white',
+                    textColor: 'black',
+                    position: -50
+                });
+            }else{
+                Alert.alert(
+                    '',
+                    response.message,
+                    [{
+                        text: 'OK',
+                        style: 'cancel'
+                    }]
+                );
+            }
+
+        } catch (error) {
+            setLoading(false);
+            console.log(error)
         }
     }
 
@@ -264,6 +318,7 @@ const SerieProfilePage = ({ navigation, route }) => {
                                     publishedDate={getDateFormat(chapter?.released)}
                                     isOwned={isOwned}
                                     onPress={() => navigation.push('ReaderPage', { chapter: chapter })}
+                                    onDelete={() => previuslyDeleteChapter(chapter)}
                                 />
                                 <Separator />
                             </View>
