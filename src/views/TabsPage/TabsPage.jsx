@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useSelector } from "react-redux";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Text, useColorScheme, Platform } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
@@ -6,6 +7,7 @@ import { Ionicons } from "@expo/vector-icons";
 // Views
 import ProfilePage from "../ProfilePage/ProfilePage";
 import LibraryPage from "../LibraryPage/LibraryPage";
+import SearchPage from "../SearchPage/SearchPage";
 
 const Tab = createBottomTabNavigator();
 
@@ -15,32 +17,47 @@ const TabsPage = ({ navigation, route }) => {
 
     const [tabIndex, setTabIndex] = useState(0);
 
+    const user = useSelector(state => state.user.user);
+
     return (
         <Tab.Navigator screenOptions={tabNavigatorScreenOptions}>
             <Tab.Screen
-                name='Library'
-                options={{
-                    headerStyle: {
-                        backgroundColor: 'white',
-                        borderBottomColor: "transparent",
-                        shadowColor: 'transparent',
-                        borderBottomWidth: 0,
-                        elevation: 0
-                    }
-                }}
-                component={LibraryPage}
+                name='Search'
+                component={SearchPage}
                 listeners={{
                     focus: () => {
                         setTabIndex(0)
                     }
                 }}
             />
+            {
+                user && (
+                    <Tab.Screen
+                        name='Library'
+                        options={{
+                            headerStyle: {
+                                backgroundColor: 'white',
+                                borderBottomColor: "transparent",
+                                shadowColor: 'transparent',
+                                borderBottomWidth: 0,
+                                elevation: 0
+                            }
+                        }}
+                        component={LibraryPage}
+                        listeners={{
+                            focus: () => {
+                                setTabIndex(1)
+                            }
+                        }}
+                    />
+                )
+            }
             <Tab.Screen
                 name='Profile'
                 component={ProfilePage}
                 listeners={{
                     focus: () => {
-                        setTabIndex(1)
+                        setTabIndex(2)
                     }
                 }}
             />
@@ -67,6 +84,23 @@ const TabsPage = ({ navigation, route }) => {
                     ) : (
                         <>
                             <Ionicons name="library-outline" size={25} color={color} />
+                            <Text style={{ color: focused ? color : isDarkMode ? "lightgray" : "gray" }}>
+                                {route.name}
+                            </Text>
+                        </>
+                    );
+                }
+                else if (route.name === 'Search') {
+                    return focused ? (
+                        <>
+                            <Ionicons name="search-outline" size={25} color={color} />
+                            <Text style={{ color: focused ? color : isDarkMode ? "lightgray" : "gray" }}>
+                                {route.name}
+                            </Text>
+                        </>
+                    ) : (
+                        <>
+                            <Ionicons name="search-outline" size={25} color={color} />
                             <Text style={{ color: focused ? color : isDarkMode ? "lightgray" : "gray" }}>
                                 {route.name}
                             </Text>

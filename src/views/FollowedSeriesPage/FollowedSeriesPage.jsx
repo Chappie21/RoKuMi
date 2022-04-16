@@ -1,43 +1,52 @@
 import React, { useState, useEffect } from 'react';
-import { Text, ScrollView, View } from 'react-native'
-import { Ionicons } from '@expo/vector-icons';
+import { Text, ScrollView, View, Alert } from 'react-native';
+
 // COMPONENTS
 import {
     MainContainer,
-    Separator,
-    AddButton,
-    ButtonContent,
-    NoUpladSeries
-} from './MySeriesPage.styled'
+    NoFollowedSeries,
+    Separator
+} from './FollowedSeriesPage.styled'
+import NoContent from '../../components/NoContent/NoContent';
 import CardSerie from '../../components/CardSerie/CardSerie';
 
 // API
-import { getUserSeries } from '../../api/series';
-import NoContent from '../../components/NoContent/NoContent';
+import { getUserTackingList } from '../../api/series';
 
-// UTILS
+// utils
 import { getDateFormat } from '../../utils/DateFormat';
 
-const MySeriesPage = ({ navigation }) => {
+const FollowedSeriesPage = ({ navigation }) => {
 
+    const [seriesFollowed, setSeriesFollowed] = useState([]);
 
-    const [series, setSeries] = useState([]);
-
-    useEffect(async () => {
+    useEffect(() => {
         const willFocusSubscription = navigation.addListener('focus', async () => {
-            const series = await getSeries();
-
-            // setear series del usuario en el stado del componente
-            setSeries(series || []);
+            const data = await getTrackingList();
+            setSeriesFollowed(data || []);
         })
         return willFocusSubscription;
     }, [])
 
-    // Obtener sereies del usuario
-    const getSeries = async () => {
+    const getTrackingList = async () => {
         try {
-            const response = await getUserSeries();
-            return response;
+            const response = await getUserTackingList();
+
+            if (response.status === 200) {
+                return response.tracking_list;
+            } else {
+                Alert.alert(
+                    '',
+                    response.message,
+                    [
+                        {
+                            text: 'OK',
+                            style: 'cancel'
+                        }
+                    ]
+                )
+            }
+
         } catch (error) {
             console.log(error);
         }
@@ -48,8 +57,8 @@ const MySeriesPage = ({ navigation }) => {
             <ScrollView>
                 <MainContainer>
                     {
-                        series.length !== 0 ?
-                            series.map((serie, index) =>
+                        seriesFollowed.length !== 0 ?
+                            seriesFollowed.map((serie, index) =>
                                 <View key={index}>
                                     <CardSerie
                                         name={serie?.name}
@@ -63,27 +72,15 @@ const MySeriesPage = ({ navigation }) => {
                                 </View>
                             )
                             : (
-                                <NoUpladSeries>
+                                <NoFollowedSeries>
                                     <NoContent message="You haven't posted anything yet" />
-                                </NoUpladSeries>
+                                </NoFollowedSeries>
                             )
                     }
                 </MainContainer>
             </ScrollView>
-            <AddButton
-                onPress={() => navigation.push('AddSeriePage')}
-            >
-                <ButtonContent>
-                    <Ionicons
-                        style={{ marginLeft: 11 }}
-                        name="add-outline"
-                        size={45} color="white"
-                    />
-                </ButtonContent>
-            </AddButton>
         </>
     )
-
 }
 
-export default MySeriesPage;
+export default FollowedSeriesPage;

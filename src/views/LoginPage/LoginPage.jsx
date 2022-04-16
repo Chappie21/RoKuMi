@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Alert } from 'react-native'
+import { Alert, ScrollView } from 'react-native'
 import AsyncStorageLib from "@react-native-async-storage/async-storage";
 import {
     FormConatiner,
@@ -32,29 +32,29 @@ const LoginPage = ({ navigation }) => {
 
     const dispatch = useDispatch();
 
-    useEffect(() =>{
-        if(userNameOrEmail !== '' && password !== ''){
+    useEffect(() => {
+        if (userNameOrEmail !== '' && password !== '') {
             setDisabledButton(false);
-        }else{
+        } else {
             setDisabledButton(true);
         }
     }, [userNameOrEmail, password])
 
-    const handleLogin = async () =>{
+    const handleLogin = async () => {
         try {
             setIsloading(true);
             const response = await postLogin(userNameOrEmail, password);
             setIsloading(false);
 
-            if(response.status === "200"){
-                const {status, message, ...userData} = response;
+            if (response.status === 200) {
+                const { status, message, ...userData } = response;
                 await AsyncStorageLib.setItem('USER', JSON.stringify(userData));
-        
+
                 // Alamacenar datos del usuario en el storage
                 dispatch(setUser(userData));
 
                 navigation.push('TabsPage')
-            }else{
+            } else {
                 Alert.alert(
                     '',
                     response.message,
@@ -75,40 +75,46 @@ const LoginPage = ({ navigation }) => {
 
     return (
         <MainContainer>
+            <ScrollView
+                contentContainerStyle={{ alignItems: "center" }}
+                overScrollMode="never"
+            >
+                <Loading enabled={isLoading} flat={undefined} />
 
-            <Loading enabled={isLoading} flat={undefined}/>
-            
-            <Title>Ro-Ku-MI</Title>
-            <SubTitle>Your reader in always site</SubTitle>
 
-            <FormConatiner>
+                <Title>Ro-Ku-MI</Title>
+                <SubTitle>Your reader everywhere</SubTitle>
 
-                {/* Username o Correo*/}
-                <TextInput
-                    placeholder="Username or Email"
-                    value={userNameOrEmail}
-                    onChangeText={setUserNameOrEmail}
-                />
+                <FormConatiner>
 
-                {/* Password */}
-                <TextInput
-                    placeholder="Password"
-                    secureTextEntry
-                    value={password}
-                    onChangeText={setPassword}
-                />
+                    {/* Username o Correo*/}
+                    <TextInput
+                        placeholder="Email @"
+                        keyboardType='email-address'
+                        value={userNameOrEmail}
+                        onChangeText={setUserNameOrEmail}
+                    />
 
-                <LoginButton 
-                    disabled={disbaledButton}
-                    onPress={handleLogin}
-                >
-                    <ButtonText>Login now!</ButtonText>
-                </LoginButton>
+                    {/* Password */}
+                    <TextInput
+                        placeholder="Password"
+                        secureTextEntry
+                        value={password}
+                        onChangeText={setPassword}
+                    />
 
-                <RegisterText>
-                    Don't have account?   <RegisterHiperText onPress={() => navigation.push('RegisterPage')}>SignUp</RegisterHiperText>
-                </RegisterText>
-            </FormConatiner>
+                    <LoginButton
+                        disabled={disbaledButton}
+                        onPress={handleLogin}
+                    >
+                        <ButtonText>Login now!</ButtonText>
+                    </LoginButton>
+
+                    <RegisterText>
+                        Don't have account?   <RegisterHiperText onPress={() => navigation.push('RegisterPage')}>SignUp</RegisterHiperText>
+                    </RegisterText>
+                </FormConatiner>
+            </ScrollView>
         </MainContainer>
     )
 }
