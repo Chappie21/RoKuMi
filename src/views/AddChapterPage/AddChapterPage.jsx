@@ -138,6 +138,7 @@ const AddChapterPage = ({ navigation, route }) => {
                     {/* Serie name */}
                     <TextInput
                         label='Number'
+                        keyboardType='numeric'
                         value={chapterNumber}
                         onChangeText={setChapterNumber}
                     />

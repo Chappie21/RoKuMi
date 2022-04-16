@@ -9,7 +9,7 @@ export const MainContainer = styled.View`
 `
 
 export const SeriesContainer = styled.View`
-    marginTop: 10%
+    marginTop: 2%
     width: 100%
     height: 100%
 `

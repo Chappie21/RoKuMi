@@ -90,7 +90,7 @@ const SearchPage = ({ navigation }) => {
                 <Loading enabled={loading} />
 
                 <Searchbar
-                    style={{ marginTop: 10 }}
+                    style={{ marginTop: 10, borderColor: 'gray'}}
                     placeholder='Search series'
                     onChangeText={onChangeSearch}
                     value={searchQuery}

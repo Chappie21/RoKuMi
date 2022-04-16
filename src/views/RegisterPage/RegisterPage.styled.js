@@ -5,10 +5,6 @@ import { TextInput as MaterialTextInput, Colors, HelperText } from "react-native
 export const MainContainer = styled.View`
     width: 100%
     height: 100%
-    padding: 2%
-    display: flex
-    flexDirection: column
-    alignItems: center
 `
 
 // Titulo y logo
