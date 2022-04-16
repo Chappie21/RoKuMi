@@ -10,7 +10,7 @@ export const OptionsBar = styled.View`
     width: 100%
     display: flex
     flexDirection: row
-    justifyContent: flex-end
+    justifyContent: space-between
 `
 
 export const SerieInfoContainer = styled.View`

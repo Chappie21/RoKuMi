@@ -44,3 +44,16 @@ export const getChapter = async (chapter) => {
         console.log(error.response);
     }
 }
+
+export const deleteChapter = async (chapter) => {
+    try {
+        await setToken();
+        const { data } = await axios.delete(constants.getChapter(chapter));
+
+        return data
+
+    } catch (error) {
+        console.log(error.response.data)
+        return error.response.data;
+    }
+}

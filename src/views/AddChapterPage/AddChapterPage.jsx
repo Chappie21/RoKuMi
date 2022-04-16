@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Text, Button, Image, ScrollView, TouchableOpacity, Alert } from 'react-native'
+import { Image, ScrollView, TouchableOpacity, Alert, View } from 'react-native'
 import FormData from 'form-data';
 
 // COMPONENTS
@@ -80,7 +80,7 @@ const AddChapterPage = ({ navigation, route }) => {
                     height: page.height
                 })
             })
-            console.log(serie);
+
             const response = await postNewChapter(formData, serie);
             setLoading(false);
 
@@ -155,9 +155,9 @@ const AddChapterPage = ({ navigation, route }) => {
                                 ?
                                 <PagesContainer>
                                     {
-                                        pages.map(pages =>
-                                            <>
-                                                <CardPage key={pages.uri}>
+                                        pages.map((pages, index) =>
+                                            <View key={index}>
+                                                <CardPage>
                                                     <Image source={pages} style={{ width: 60, height: 100, borderRadius: 5 }} />
                                                     <TouchableOpacity
                                                         onPress={() => hanldleDeletePage(pages.uri)}
@@ -167,7 +167,7 @@ const AddChapterPage = ({ navigation, route }) => {
                                                     </TouchableOpacity>
                                                 </CardPage>
                                                 <Separator />
-                                            </>
+                                            </View>
                                         )
                                     }
                                 </PagesContainer>

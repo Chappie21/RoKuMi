@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { ScrollView, View } from 'react-native'
+import { ScrollView, View, Alert } from 'react-native'
 import { Searchbar, Text } from 'react-native-paper';
 import {
     MainContainer,
@@ -66,7 +66,14 @@ const SearchPage = ({ navigation }) => {
             if (response.status === "200") {
                 return response;
             } else {
-
+                Alert.alert(
+                    '',
+                    response.message,
+                    [{
+                        text: 'OK',
+                        style: 'cancel'
+                    }]
+                )
             }
 
         } catch (error) {

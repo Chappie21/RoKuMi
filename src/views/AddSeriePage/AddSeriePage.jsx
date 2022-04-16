@@ -154,7 +154,7 @@ const AddSeriePage = ({ navigation, route }) => {
                 type: `image/${fileType}`
             })
         }else{
-            data.append('cover', null);
+            data.append('cover', new File([""], ""), "");
         }
 
         return data;
